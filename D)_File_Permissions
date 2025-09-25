@@ -220,3 +220,234 @@ only group
 chmod - command to set permission to files/directoreis
 chown - command to change owner and group name of files/directories
 chgrp - command to change group name files/directories
+
+                   Part 1
+-----------------------------------------------------------------------------------------------------------------------------------
+Theory Interview Questions & Answers (Linux File Permissions)
+----------------------------------------------------------------------------------------------------------------------------------
+1. What are Linux file permissions?
+Answer: 
+Linux file permissions determine who can read, write, or execute a file or directory. They ensure security by controlling access.
+There are three permission types:
+r (read) – View contents of file or list directory.
+w (write) – Modify file contents or create/delete inside directory.
+x (execute) – Run a file as a program or enter a directory.
+
+2. What are the different categories of users for file permissions?
+Answer:
+Owner (u) – The user who created the file.
+Group (g) – Users who belong to the file’s group.
+Others (o) – All other users on the system.
+
+3. How can you view file permissions in Linux?
+Answer:
+Use the ls -l command:
+ls -l file.txt
+Output example:
+-rwxr-xr--  1 user group  120 Sep 25 12:00 file.txt
+Here:
+- → regular file
+rwx → owner permissions
+r-x → group permissions
+r-- → others permissions
+
+4. What are numeric (octal) file permissions?
+Answer:
+Permissions can also be represented as numbers:
+4 = read, 2 = write, 1 = execute
+Example: chmod 754 file.txt →
+Owner = 7 (rwx)
+Group = 5 (r-x)
+Others = 4 (r--)
+
+5. What are special file permission bits in Linux?
+Answer:
+SUID (Set User ID, 4000): Run with file owner’s permissions.
+SGID (Set Group ID, 2000): Run with group’s permissions.
+Sticky bit (1000): On directories, only owner can delete files inside.
+
+6. What’s the difference between chmod, chown, and chgrp?
+Answer:
+chmod → change file permissions
+chown → change file owner
+chgrp → change file group
+
+7. What happens if a directory does not have execute permission?
+Answer:
+You can list the contents (ls) if you have read (r) permission, but you cannot enter the directory (cd) or access files inside without execute (x) permission.
+
+8. What is the default umask value and its role?
+Answer:
+umask defines default file permissions when a new file/directory is created.
+Example:
+Default umask = 022
+New file → 666 – 022 = 644 (rw-r--r--)
+New directory → 777 – 022 = 755 (rwxr-xr-x)
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                              Part 2
+Practical Interview Questions & Answers (Hands-On)
+------------------------------------------------------------------------------------------------------------------------------------------
+1.How would you make a script executable only by the owner?
+Answer:
+chmod 700 script.sh
+Owner → rwx, Group → ---, Others → ---.
+
+2. How to give read and write permissions to the group only?
+Answer:
+chmod g+rw file.txt
+Now the group can read/write the file.
+
+3. How do you remove write permission for others on a directory?
+Answer:
+chmod o-w /mydir
+Removes write permission from “others”.
+
+
+4. You have a shared directory /project. You want all files created inside it to belong to the same group. How will you do it?
+Answer:
+chgrp developers /project
+chmod g+s /project
+The SGID bit ensures all new files inherit the group developers.
+
+
+5. How to set a sticky bit on /shared so users cannot delete others’ files?
+Answer:
+chmod +t /shared
+ls -ld /shared
+Output shows drwxrwxrwt → t means sticky bit applied.
+
+
+6. A file has permissions -rw-rw-rw-. What’s the octal representation?
+Answer:
+666 → read/write for owner, group, others.
+
+
+7. You created a file secret.txt. How do you make it accessible only to you?
+Answer: 
+chmod 600 secret.txt
+Only owner can read/write.
+
+
+8. How do you change ownership of a file from user alice to bob?
+Answer:
+chown bob file.txt
+
+
+9. How can you check effective permissions of a file for a user?
+Answer:
+namei -l file.txt
+or
+ls -l file.txt
+and check ownership/group of the file and user’s groups using id.
+
+
+10. A script must always run as root, even if executed by a normal user. How do you configure this?
+Answer:
+chown root script.sh
+chmod 4755 script.sh
+
+
+This sets SUID, so it runs with root privileges.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+📝 Linux File Permissions – Cheat Sheet
+---------------------------------------------------------------------------------------------------------------------------------------------
+1. Permission Basics
+r = 4 (read) → View file / list directory
+w = 2 (write) → Modify file / create-delete in dir
+x = 1 (execute) → Run file / enter dir
+
+
+2. Permission Categories
+u (user/owner)
+g (group)
+o (others)
+a (all: u+g+o)
+
+
+3. View Permissions
+ls -l file.txt
+Example:
+-rwxr-xr--
+Owner = rwx
+Group = r-x
+Others = r--
+
+
+4. Change Permissions
+Symbolic mode:
+chmod u+x file.sh   # add execute to owner
+chmod g-w file.txt  # remove write for group
+chmod o=r file.txt  # others only read
+Numeric (octal) mode:
+
+7 = rwx
+
+6 = rw-
+
+5 = r-x
+
+4 = r--
+
+chmod 755 script.sh   # rwx r-x r-x
+chmod 644 file.txt    # rw- r-- r--
+
+
+5. Change Ownership
+chown user file.txt     # change owner
+chgrp devs file.txt     # change group
+chown user:group file   # change both
+
+
+6. Special Permissions
+SUID (4xxx): Run with owner’s privileges
+chmod 4755 file.sh
+SGID (2xxx): Run with group’s privileges / new files inherit group
+chmod 2755 /dir
+Sticky Bit (1xxx): Only owner can delete files in shared dir
+chmod +t /shared
+Shows as: drwxrwxrwt
+
+
+
+7. Default Permissions – umask
+Check:
+umask
+Default new file permission = 666 – umask
+Default new dir permission = 777 – umask
+
+Example:
+umask 022 → files = 644, dirs = 755
+
+
+8. Practical Scenarios
+✅ Script only owner can run:
+chmod 700 script.sh
+
+✅ File only you can read/write:
+chmod 600 secret.txt
+
+✅ Shared directory with group inheritance:
+chmod g+s /project
+
+✅ Shared folder where users can’t delete each other’s files:
+chmod +t /shared
+
+
+9. Check Effective Permissions
+namei -l file.txt   # show permission breakdown
+id                  # check user groups
+
+
+⚡ Quick Octal Reference:
+
+Value	Meaning
+7	rwx
+6	rw-
+5	r-x
+4	r--
+3	-wx
+2	-w-
+1	--x
+0	---
