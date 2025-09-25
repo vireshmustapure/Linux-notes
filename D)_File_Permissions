@@ -451,3 +451,11 @@ Value	Meaning
 2	-w-
 1	--x
 0	---
+=========================================================================================================================
+1.how do modifhy permission of a file?
+  ANS: #chmod  a+rwx "File name"
+u menan USER
+g mean GROUP
+O mean other
+a mean all
+
