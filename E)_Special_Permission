@@ -104,3 +104,106 @@ prevents to delete other user’s file from public directories. Its numeric valu
 #chmod 1755 <file/dirname>
 #chmod o+t <file/dirname>
 #chmod o-t <file/dirname>
+==================================================================================================================================================
+
+                       My Notes
+
+==================================================================================================================================================
+
+1.Create a group 
+  #groupadd groupname
+2).Create a user
+ #useradd username
+3).Set a password for user 
+ #passwd alice
+4).Create a user with a home directory
+ #useradd -m bob
+ #passwd bob
+5).Add user to a group
+ #usermod -aG groupname username (ex.usermod -aG IT Viresh)
+6).Check which groups a user belongs to
+ #groups alice
+7).List all users & groups
+ #List all users & groups
+8).Delete user or group
+ #userdel viresh
+=====================================================================================================================================================
+                       User & Group Management – Interview Questions with Answers
+
+====================================================================================================================================================
+                      User & Group Management – Interview Questions with Answers
+Q1. How do you create a new group in Linux?
+Answer: Use the groupadd command.
+Example: #groupadd developers
+
+Q2. How do you create a new user in Linux?
+Answer:Use the useradd command.
+Example: useradd alice             useradd alice → creates the user.           
+
+Q3. How do you set password a new user in Linux?
+Answer:Use the passwd command.   
+Example:passwd viresh             passwd alice → sets a password for the user.
+
+Q4.If you want to create a home directory automatically:
+Answer: useradd -m alice
+
+Q5.How do you add a user to a group?
+Answer: Use usermod -aG.
+Example: usermod -aG developers viresh
+
+Q6. How can you see which groups a user belongs to?
+Answer: groups alice
+
+Q7. How do you see all users on the system?
+Answer: cat /etc/passwd
+
+Q8.How do you see all groups on the system?
+Answer: cat /etc/group
+
+Q9. How do you delete a user and their home directory?
+Answer: userdel -r alice  (-r removes the home directory too.)
+
+Q10. How do you delete a group in Linux?
+Answer: groupdel developers
+
+Q11. What is the difference between a Primary Group and a Secondary Group?
+
+Answer: Primary Group: The default group assigned when a user is created (usually same name as the username).
+
+        Secondary Group: Extra groups a user is added to using usermod -aG.
+
+Example: User alice → primary group = alice.
+        If we add alice to developers, then developers = secondary group.
+
+
+Q12. How do you switch to another user?
+Answer: su - username
+
+Q11. How do you check the current user and groups?
+Answer: Current user: whoami
+User ID + Group info:
+
+
+Q13. How do you create a user with a specific group?
+Answer: useradd -m -g developers bob
+-m → create home directory.
+-g developers → assign developers as primary group.
+
+
+Q14. What file stores user account details in Linux?
+Answer:  /etc/passwd → user details (username, UID, GID, home dir, shell).           
+        /etc/shadow → encrypted passwords.
+
+Q15. What file stores group details?
+Answer:  /etc/group → contains group names and members.
+
+
+Q16. How do you lock or unlock a user account?
+Answer: Lock user:
+Example : usermod -L viresh
+
+
+
+
+
+
